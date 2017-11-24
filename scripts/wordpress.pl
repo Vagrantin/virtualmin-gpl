@@ -39,10 +39,6 @@ else {
 	}
 }
 
-sub script_wordpress_php_modules
-{
-return ("mysql", "gd");
-}
 
 sub script_wordpress_php_optional_modules
 {
@@ -81,6 +77,18 @@ elsif ($phpv < 5.2) {
 	}
 
 return @rv;
+}
+
+#change PHP module name if PHP 7+
+sub script_wordpress_php_modules
+{
+my $phpv = get_php_version($phpver || 5, $d);
+if ($phpv < 7.0) {
+	return ("mysql", "gd");
+	}
+else {
+	return ("mysqli", "gd");
+	}
 }
 
 # script_wordpress_params(&domain, version, &upgrade-info)
